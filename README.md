@@ -72,20 +72,14 @@ San Jose | 2012 | 982,579
 San Jose | 2011 | 970,011
 San Jose | 2010 | 955,264
 
-If I wanted to generate a Jekyll page with a section per city, I would need to create a separate list of the city names like this, using the [`where` template filter](https://github.com/jekyll/jekyll/blob/b06af5a44f47ec6cf5f203e8eb318868eac0ae86/lib/jekyll/filters.rb#L215-L226):
+If I wanted to generate a Jekyll page with a section per city, I would either need to create a separate list of the city names as page or site data and use the [`where` template filter](https://github.com/jekyll/jekyll/blob/b06af5a44f47ec6cf5f203e8eb318868eac0ae86/lib/jekyll/filters.rb#L215-L226), or use  ['group_by`](https://github.com/jekyll/jekyll/blob/b06af5a44f47ec6cf5f203e8eb318868eac0ae86/lib/jekyll/filters.rb#L195-L213):
 
 ```html
----
-cities:
-- San Diego
-- San Francisco
-- San Jose
----
-{% for city in page.cities %}
-<section id="{{ city | slugify }">
+{% for city in site.data.cities | group_by: 'City' %}
+<section id="{{ city.name | slugify }">
   <h1>{{ city }} Population</h1>
   <ul>
-    {% for row in site.data.cities | where: 'City', city %}
+    {% for row in city.items %}
     <li>{{ row.Population }} in {{ row.Year }}</li>
     {% endfor %}
   </ul>
@@ -93,7 +87,7 @@ cities:
 {% endfor %}
 ```
 
-But if we generated some strucrured data with:
+But if we generated some structured data with:
 
 ```yaml
 '{City}':
