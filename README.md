@@ -48,7 +48,7 @@ Options:
   -h, --help    Show this help screen
 ```
 
-The `config` should be a JSON or YAML file that encodes the "meta-structure" described above. The above output would be generated with:
+The `config` should be a JSON or YAML file that encodes the "meta-structure" described above. If you don't provide the `--if` (input format) and `--of` (output format) options, then the formats are inferred from the filenames. (You should provide the format options if you're piping to or from stdio.) The above output would be generated with:
 
 ```sh
 nestly --config structure.yml xyz.csv -o nested.yml
