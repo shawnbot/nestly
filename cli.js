@@ -40,15 +40,28 @@ var inputFormat = inferFormat(input, options['if']);
 var output = options.o || args.shift() || process.stdout;
 var outputFormat = inferFormat(output, options.of);
 
+var async = require('async');
+var fs = require('fs');
 var read = require('./lib/read');
 var write = require('./lib/write');
+var template = require('./lib/template');
+var groupBy = require('./lib/group-by');
 var nestify = require('./');
 
 var bail = function(error) {
   if (error) {
     console.error(error);
     process.exit(1);
+    return true;
   }
+};
+
+var nestAndWrite = function(data, structure, filename, done) {
+  var output = fs.createWriteStream(filename);
+  var nested = nestify(structure, data);
+  return write(output, nested, outputFormat, function(error) {
+    bail(error) || done();
+  });
 };
 
 read(config, configFormat, function(error, structure) {
@@ -57,13 +70,17 @@ read(config, configFormat, function(error, structure) {
   read(input, inputFormat, function(error, data) {
     bail(error);
 
-    console.warn('loaded; nestifying...', structure);
-    var nested = nestify(structure, data);
+    if (options.o && template.is(options.o)) {
+      var groups = groupBy(data, options.o);
+      async.each(groups, function(group, done) {
+        var filename = group.key;
+        var values = group.values;
+        console.warn('nest and write:', values.length, filename);
+        nestAndWrite(values, structure, filename, done);
+      }, bail);
+      return;
+    }
 
-    write(output, nested, outputFormat, function(error) {
-      bail(error);
-
-      console.warn('all done!');
-    });
+    nestAndWrite(data, structure, output, bail);
   });
 });

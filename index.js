@@ -1,4 +1,7 @@
 var curry = require('curry');
+var template = require('./lib/template');
+var groupBy = require('./lib/group-by');
+var interpolate = template.interpolate;
 
 var nest = function(struct, data) {
   switch (typeof struct) {
@@ -27,7 +30,7 @@ var nestKeys = function(obj, data) {
   var out = {};
   var keys = Object.keys(obj);
   var key0 = keys[0];
-  if (keys.length === 1 && isTemplate(key0)) {
+  if (keys.length === 1 && template.is(key0)) {
     var groups = groupBy(data, key0);
     var value = obj[key0];
     groups.forEach(function(group) {
@@ -39,39 +42,6 @@ var nestKeys = function(obj, data) {
     });
   }
   return out;
-};
-
-var isTemplate = function(str) {
-  return str.match(/{.+}/);
-};
-
-var interpolate = curry(function(template, data) {
-  var match = template.match(/^{([^}]+)}$/);
-  return match
-    ? data[match[1]]
-    : template.replace(/{([^}]+)}/g, function(match, key) {
-        return data[key];
-      });
-});
-
-var groupBy = function(data, template) {
-  var key = interpolate(template);
-  var groups = {};
-  data.forEach(function(d) {
-    var g = key(d);
-    if (g in groups) {
-      groups[g].push(d);
-    } else {
-      groups[g] = [d];
-    }
-  });
-  return Object.keys(groups)
-    .map(function(g) {
-      return {
-        key: g,
-        values: groups[g]
-      };
-    });
 };
 
 module.exports = curry(function(structure, data) {

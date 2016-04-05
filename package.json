@@ -7,6 +7,7 @@
     "nestly": "cli.js"
   },
   "dependencies": {
+    "async": "^1.5.2",
     "curry": "^1.2.0",
     "js-yaml": "^3.5.5",
     "tito": "^0.4.0",
