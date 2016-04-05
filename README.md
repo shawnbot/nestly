@@ -72,7 +72,7 @@ San Jose | 2012 | 982,579
 San Jose | 2011 | 970,011
 San Jose | 2010 | 955,264
 
-If I wanted to generate a Jekyll page with a section per city, I would need to create a separate list of the city names like this, using the [`where` template filter](http://jekyll.pygmeeweb.com/tests/#panel-8):
+If I wanted to generate a Jekyll page with a section per city, I would need to create a separate list of the city names like this, using the [`where` template filter](https://github.com/jekyll/jekyll/blob/b06af5a44f47ec6cf5f203e8eb318868eac0ae86/lib/jekyll/filters.rb#L215-L226):
 
 ```html
 ---
