@@ -72,22 +72,14 @@ San Jose | 2012 | 982,579
 San Jose | 2011 | 970,011
 San Jose | 2010 | 955,264
 
-If I wanted to generate a Jekyll page with a section per city, I would either need to create a separate list of the city names as page or site data and use the [`where` template filter](https://github.com/jekyll/jekyll/blob/b06af5a44f47ec6cf5f203e8eb318868eac0ae86/lib/jekyll/filters.rb#L215-L226), or use  ['group_by`](https://github.com/jekyll/jekyll/blob/b06af5a44f47ec6cf5f203e8eb318868eac0ae86/lib/jekyll/filters.rb#L195-L213):
+If I wanted to get the population for a particular city and year in a template, I would need to do something funky like this:
 
-```html
-{% for city in site.data.cities | group_by: 'City' %}
-<section id="{{ city.name | slugify }">
-  <h1>{{ city }} Population</h1>
-  <ul>
-    {% for row in city.items %}
-    <li>{{ row.Population }} in {{ row.Year }}</li>
-    {% endfor %}
-  </ul>
-</section>
-{% endfor %}
+```
+{% assign row = site.data.cities | where: 'City', city | where: 'Year': year | first %}
+{{ row.Population }}
 ```
 
-But if we generated some structured data with:
+But if we generated data with a structure like this:
 
 ```yaml
 '{City}':
@@ -95,19 +87,10 @@ But if we generated some structured data with:
     '{Year}': '{Population}'
 ```
 
-Then our template could be simplified to:
+Then getting the population for a city becomes:
 
-```html
-{% for city in site.data.cities %}
-<section id="{{ city | slugify }}">
-  <h1>{{ city }} Population</h1>
-  <ul>
-  {% for year in city.population %}
-    <li>{{ year[1] }} in {{ year[0] }}</li>
-  {% endfor %}
-  </ul>
-</section>
-{% endfor %}
+```
+{{ site.data.cities[city].population[year] }}
 ```
 
 [Jekyll]: https://jekyllrb.com/
