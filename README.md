@@ -59,18 +59,12 @@ I made it to ease the incorporation of data into [Jekyll] projects, where tabula
 
 City | Year | Population
 :--- | :--- | ---:
-San Diego | 2010 | 1,306,000
-San Diego | 2011 | 1,320,000
 San Diego | 2012 | 1,337,000
 San Diego | 2013 | 1,356,000
-San Francisco | 2013 | 837,442
 San Francisco | 2012 | 827,420
-San Francisco | 2011 | 815,06
-San Francisco | 2010 | 805,704
-San Jose | 2013 | 998,537
+San Francisco | 2013 | 837,442
 San Jose | 2012 | 982,579
-San Jose | 2011 | 970,011
-San Jose | 2010 | 955,264
+San Jose | 2013 | 998,537
 
 If I wanted to get the population for a particular city and year in a template, I would need to do something funky like this:
 
