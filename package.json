@@ -1,0 +1,33 @@
+{
+  "name": "nestly",
+  "version": "0.0.1",
+  "description": "Create structured data from tabular input with JSON and YAML literals",
+  "main": "index.js",
+  "dependencies": {
+    "curry": "^1.2.0",
+    "js-yaml": "^3.5.5",
+    "tito": "^0.4.0",
+    "yamljs": "^0.2.7"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shawnbot/nestly.git"
+  },
+  "keywords": [
+    "data",
+    "structure",
+    "tabular",
+    "json",
+    "yaml"
+  ],
+  "author": "Shawn Allen <shawn.allen@gsa.gov>",
+  "license": "CC0-1.0",
+  "bugs": {
+    "url": "https://github.com/shawnbot/nestly/issues"
+  },
+  "homepage": "https://github.com/shawnbot/nestly#readme"
+}
